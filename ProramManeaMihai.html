@@ -1,0 +1,654 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="theme-color" content="#0d0d12">
+<title>Program Șofer 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Syne:wght@600;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0d0d12;--card:#16161f;--card2:#1c1c28;--border:#2a2a3a;
+  --accent:#f0c040;--blue:#5b8cff;--green:#4ade80;--red:#f87171;
+  --orange:#fb923c;--purple:#c084fc;--sarb:#ff6b6b;--teal:#2dd4bf;
+  --text:#e8e8f0;--muted:#5a5a75;--sub:#3a3a52;
+}
+body.light{
+  --bg:#f4f3ef;--card:#ffffff;--card2:#f0efe9;--border:#dddbd0;
+  --text:#1a1a1a;--muted:#8a8878;--sub:#cccab8;
+  --accent:#c49a00;--blue:#2563eb;--green:#16a34a;--red:#dc2626;
+  --orange:#ea580c;--purple:#9333ea;--sarb:#e53e3e;--teal:#0d9488;
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
+html{-webkit-text-size-adjust:100%;height:100%;}
+body{background:var(--bg);color:var(--text);font-family:'DM Mono',monospace;padding:12px;padding-bottom:max(80px,calc(env(safe-area-inset-bottom)+20px));-webkit-overflow-scrolling:touch;transition:background .2s,color .2s;}
+
+header{text-align:center;padding:14px 0 8px;position:relative;}
+header h1{font-family:'Syne',sans-serif;font-size:1.6rem;font-weight:800;color:var(--accent);letter-spacing:-0.02em;}
+header p{color:var(--muted);font-size:0.65rem;text-transform:uppercase;letter-spacing:0.12em;margin-top:2px;}
+.theme-btn{position:absolute;top:14px;right:0;background:var(--card2);border:1px solid var(--border);border-radius:20px;padding:6px 10px;font-size:0.75rem;cursor:pointer;color:var(--muted);}
+
+.month-tabs{display:flex;gap:6px;overflow-x:auto;padding:0 0 12px;scrollbar-width:none;}
+.month-tabs::-webkit-scrollbar{display:none;}
+.month-tab{flex-shrink:0;padding:7px 14px;border-radius:20px;border:1px solid var(--border);background:var(--card2);color:var(--muted);font-family:'DM Mono',monospace;font-size:0.68rem;cursor:pointer;white-space:nowrap;}
+.month-tab.active{background:var(--accent);color:#0d0d12;border-color:var(--accent);font-weight:500;}
+.month-tab.has-data{border-color:rgba(91,140,255,0.5);color:var(--blue);}
+
+.legend{display:flex;flex-wrap:wrap;gap:7px 12px;justify-content:center;margin-bottom:14px;padding:10px 12px;background:var(--card);border-radius:10px;border:1px solid var(--border);}
+.li{display:flex;align-items:center;gap:5px;font-size:0.62rem;color:var(--muted);}
+.dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
+
+.month-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;}
+.month-title{font-family:'Syne',sans-serif;font-size:1.25rem;font-weight:800;}
+.month-stats{font-size:0.62rem;color:var(--muted);}
+
+.today-widget{background:var(--card);border:1px solid rgba(240,192,64,0.4);border-radius:14px;margin-bottom:12px;overflow:hidden;position:relative;}
+.tw-header{background:linear-gradient(135deg,rgba(240,192,64,0.12),rgba(91,140,255,0.08));padding:12px 14px 10px;display:flex;align-items:center;justify-content:space-between;}
+.tw-title{font-family:'Syne',sans-serif;font-size:0.72rem;font-weight:800;color:var(--accent);text-transform:uppercase;letter-spacing:0.1em;}
+.tw-data{font-size:0.62rem;color:var(--muted);}
+.tw-body{padding:10px 14px 14px;}
+.tw-ore{font-family:'Syne',sans-serif;font-size:2rem;font-weight:800;color:var(--text);line-height:1;letter-spacing:-0.02em;}
+.tw-sub{font-size:0.72rem;color:var(--accent);margin-top:4px;font-weight:500;}
+.tw-extra{font-size:0.62rem;color:var(--orange);margin-top:2px;}
+.tw-nota{font-size:0.62rem;color:var(--muted);margin-top:3px;font-style:italic;}
+.tw-libre{font-size:1rem;color:var(--green);font-weight:500;}
+.tw-co{font-size:1rem;color:var(--red);font-weight:500;}
+.tw-cm{font-size:1rem;color:var(--teal);font-weight:500;}
+.tw-sarb{font-size:1rem;color:var(--sarb);font-weight:500;}
+.tw-gol{font-size:0.78rem;color:var(--muted);font-style:italic;}
+.tw-edit{position:absolute;top:10px;right:10px;background:rgba(240,192,64,0.15);border:1px solid rgba(240,192,64,0.3);color:var(--accent);font-size:0.6rem;padding:4px 8px;border-radius:6px;cursor:pointer;font-family:'DM Mono',monospace;}
+
+.countdown-bar{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:10px 14px;margin-bottom:12px;display:flex;justify-content:space-around;text-align:center;}
+.cd-item{}
+.cd-val{font-family:'Syne',sans-serif;font-size:1.2rem;font-weight:800;}
+.cd-lbl{font-size:0.5rem;color:var(--muted);text-transform:uppercase;letter-spacing:0.06em;margin-top:2px;}
+.cd-div{width:1px;background:var(--border);}
+
+.toolbar{display:flex;gap:6px;margin-bottom:10px;}
+.tb-btn{flex:1;padding:8px 4px;border-radius:9px;border:1px solid var(--border);background:var(--card2);color:var(--muted);font-family:'DM Mono',monospace;font-size:0.6rem;cursor:pointer;text-align:center;white-space:nowrap;}
+.tb-btn:active{background:rgba(91,140,255,0.1);color:var(--blue);}
+.tb-btn.prim{border-color:rgba(91,140,255,0.4);color:var(--blue);background:rgba(91,140,255,0.07);}
+
+.view-toggle{display:flex;gap:6px;margin-bottom:12px;}
+.vt-btn{flex:1;padding:7px;border-radius:9px;border:1px solid var(--border);background:var(--card2);color:var(--muted);font-family:'DM Mono',monospace;font-size:0.65rem;cursor:pointer;text-align:center;}
+.vt-btn.act{background:var(--accent);color:#0d0d12;border-color:var(--accent);font-weight:500;}
+
+.stats-panel{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:14px;margin-bottom:12px;display:none;}
+.stats-panel.open{display:block;}
+.stats-title{font-family:'Syne',sans-serif;font-size:0.72rem;font-weight:800;color:var(--text);margin-bottom:10px;text-transform:uppercase;letter-spacing:0.06em;}
+.stats-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+.stat-box{background:var(--card2);border:1px solid var(--border);border-radius:9px;padding:9px 11px;}
+.stat-val{font-family:'Syne',sans-serif;font-size:1.3rem;font-weight:800;line-height:1;}
+.stat-lbl{font-size:0.56rem;color:var(--muted);text-transform:uppercase;letter-spacing:0.08em;margin-top:3px;}
+.stat-full{grid-column:1/-1;}
+.stats-sep{grid-column:1/-1;height:1px;background:var(--border);margin:2px 0;}
+.stats-sub{grid-column:1/-1;font-size:0.55rem;color:var(--muted);text-transform:uppercase;letter-spacing:0.1em;}
+
+.week-nav{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;padding:8px 12px;background:var(--card);border:1px solid var(--border);border-radius:10px;}
+.week-nav-btn{background:none;border:none;color:var(--muted);font-size:1.1rem;cursor:pointer;padding:4px 10px;}
+.week-label{font-family:'Syne',sans-serif;font-size:0.8rem;font-weight:800;color:var(--text);}
+.week-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;margin-bottom:12px;}
+.wg-day{border-radius:9px;border:1px solid var(--border);background:var(--card2);padding:7px 3px;text-align:center;cursor:pointer;min-height:72px;display:flex;flex-direction:column;align-items:center;gap:2px;}
+.wg-day.today{border-color:var(--accent);}
+.wg-day.we{border-color:rgba(192,132,252,0.35);background:rgba(192,132,252,0.04);}
+.wg-day.sarb-d{border-color:rgba(255,107,107,0.35);}
+.wg-day.empty{opacity:0.25;pointer-events:none;}
+.wg-dn{font-size:0.48rem;color:var(--muted);text-transform:uppercase;letter-spacing:0.04em;}
+.wg-num{font-family:'Syne',sans-serif;font-size:1rem;font-weight:800;line-height:1;}
+.wg-num.td{color:var(--accent);}
+.wg-num.we{color:var(--purple);}
+.wg-dot{width:6px;height:6px;border-radius:50%;margin-top:2px;}
+.wg-ore{font-size:0.46rem;color:var(--muted);margin-top:1px;line-height:1.4;}
+.week-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:14px;}
+.ws-box{background:var(--card);border:1px solid var(--border);border-radius:9px;padding:8px 10px;text-align:center;}
+.ws-val{font-family:'Syne',sans-serif;font-size:1.1rem;font-weight:800;}
+.ws-lbl{font-size:0.5rem;color:var(--muted);text-transform:uppercase;letter-spacing:0.06em;margin-top:2px;}
+
+.day-card{background:var(--card);border:1px solid var(--border);border-radius:12px;margin-bottom:7px;overflow:hidden;}
+.day-card.today-card{border-color:var(--accent);}
+.day-card.sarb-card{border-color:rgba(255,107,107,0.45);background:rgba(255,107,107,0.02);}
+.day-card.sarb-card .day-header{background:rgba(255,107,107,0.07);}
+.day-card.we-card{border-color:rgba(192,132,252,0.4);background:rgba(192,132,252,0.02);}
+.day-card.we-card .day-header{background:rgba(192,132,252,0.06);}
+.day-header{display:flex;align-items:center;justify-content:space-between;padding:9px 12px;background:var(--card2);}
+.day-left{display:flex;align-items:center;gap:9px;}
+.day-num{font-family:'Syne',sans-serif;font-size:1.35rem;font-weight:800;min-width:26px;line-height:1;}
+.today-num{color:var(--accent);}
+.sarb-num{color:var(--sarb);}
+.we-num{color:var(--purple);}
+.day-name{font-size:0.7rem;font-weight:500;text-transform:uppercase;letter-spacing:0.04em;}
+.sarb-lbl{font-size:0.58rem;color:var(--sarb);margin-top:1px;}
+.day-type-lbl{font-size:0.56rem;color:var(--muted);margin-top:1px;}
+.right-col{display:flex;flex-direction:column;align-items:flex-end;gap:4px;}
+.tur-badge{font-size:0.6rem;padding:3px 8px;border-radius:20px;font-weight:500;white-space:nowrap;}
+.tb-lucru{background:rgba(91,140,255,0.15);color:var(--blue);border:1px solid rgba(91,140,255,0.3);}
+.tb-libre{background:rgba(74,222,128,0.1);color:var(--green);border:1px solid rgba(74,222,128,0.2);}
+.tb-co{background:rgba(248,113,113,0.1);color:var(--red);border:1px solid rgba(248,113,113,0.2);}
+.tb-cm{background:rgba(45,212,191,0.1);color:var(--teal);border:1px solid rgba(45,212,191,0.25);}
+.tb-sarb{background:rgba(255,107,107,0.12);color:var(--sarb);border:1px solid rgba(255,107,107,0.3);}
+.tb-gol{background:rgba(90,90,117,0.12);color:var(--muted);border:1px solid rgba(90,90,117,0.25);}
+.extra-badge{font-size:0.52rem;padding:2px 6px;border-radius:10px;background:rgba(251,146,60,0.15);color:var(--orange);border:1px solid rgba(251,146,60,0.3);}
+
+.shift-display{padding:8px 12px 6px;}
+.shift-block{border-radius:8px;padding:10px 14px;background:rgba(91,140,255,0.06);border:1px solid rgba(91,140,255,0.35);}
+.s-lbl{font-size:0.5rem;text-transform:uppercase;letter-spacing:0.1em;margin-bottom:4px;color:var(--blue);}
+.linie-info{font-size:0.68rem;color:var(--accent);font-weight:500;margin-bottom:5px;}
+.ore-row{display:flex;align-items:center;gap:4px;}
+.t{font-size:1.08rem;font-weight:500;color:var(--text);}
+.sep{color:var(--muted);font-size:0.68rem;}
+.ore-extra{font-size:0.6rem;color:var(--orange);margin-top:5px;}
+.nota-display{font-size:0.62rem;color:var(--muted);font-style:italic;margin-top:6px;padding-top:6px;border-top:1px solid var(--border);}
+
+.state-block{padding:8px 12px 10px;font-size:0.7rem;}
+.st-libre{color:var(--green);}
+.st-co{color:var(--red);}
+.st-cm{color:var(--teal);}
+.st-sarb{color:var(--sarb);}
+.st-gol{color:var(--muted);font-style:italic;}
+
+.day-actions{display:flex;gap:6px;padding:0 12px 10px;}
+.edit-btn{flex:1;background:rgba(90,90,117,0.1);border:1px dashed rgba(90,90,117,0.35);color:var(--muted);font-family:'DM Mono',monospace;font-size:0.63rem;padding:9px 6px;border-radius:7px;cursor:pointer;text-align:center;min-height:40px;}
+.edit-btn:active{background:rgba(91,140,255,0.1);color:var(--blue);}
+.copy-btn{background:rgba(90,90,117,0.07);border:1px solid rgba(90,90,117,0.25);color:var(--muted);font-family:'DM Mono',monospace;font-size:0.6rem;padding:9px 10px;border-radius:7px;cursor:pointer;white-space:nowrap;}
+.copy-btn.paste-mode{border-color:rgba(240,192,64,0.5);color:var(--accent);background:rgba(240,192,64,0.08);}
+
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.92);z-index:100;align-items:flex-end;justify-content:center;}
+.modal-overlay.active{display:flex;}
+.modal{background:var(--card);border:1px solid var(--border);border-radius:20px 20px 0 0;padding:20px 16px 44px;width:100%;max-width:500px;max-height:92vh;overflow-y:auto;-webkit-overflow-scrolling:touch;overscroll-behavior:contain;}
+.modal-title{font-family:'Syne',sans-serif;font-size:1.1rem;font-weight:800;color:var(--accent);margin-bottom:2px;}
+.modal-sub{font-size:0.6rem;color:var(--muted);margin-bottom:14px;}
+.m-lbl{font-size:0.58rem;color:var(--muted);text-transform:uppercase;letter-spacing:0.1em;display:block;margin:12px 0 6px;}
+.m-div{height:1px;background:var(--border);margin:10px 0 12px;}
+.quick-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:5px;}
+.q-btn{padding:8px 2px;border-radius:9px;border:1px solid var(--border);background:var(--card2);font-family:'DM Mono',monospace;font-size:0.56rem;cursor:pointer;text-align:center;color:var(--muted);}
+.q-libre{border-color:rgba(74,222,128,0.4);color:var(--green);}
+.q-co{border-color:rgba(248,113,113,0.4);color:var(--red);}
+.q-cm{border-color:rgba(45,212,191,0.4);color:var(--teal);}
+.q-sarb{border-color:rgba(255,107,107,0.4);color:var(--sarb);}
+.q-del{border-color:rgba(90,90,117,0.35);color:var(--muted);}
+.inp-row{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px;}
+.inp-group{display:flex;flex-direction:column;gap:4px;}
+.inp-lbl{font-size:0.52rem;color:var(--muted);text-transform:uppercase;letter-spacing:0.08em;}
+.inp{width:100%;background:var(--card2);border:1px solid var(--border);border-radius:8px;color:var(--text);font-family:'DM Mono',monospace;font-size:0.85rem;padding:10px;outline:none;-webkit-appearance:none;appearance:none;}
+.inp:focus{border-color:var(--accent);}
+.inp::placeholder{color:var(--muted);}
+input[type="time"].inp::-webkit-calendar-picker-indicator{filter:invert(0.5);}
+textarea.inp{resize:none;font-size:0.78rem;line-height:1.5;}
+.preview{background:var(--card2);border:1px solid var(--sub);border-radius:9px;padding:12px;margin:12px 0;min-height:52px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;text-align:center;}
+.pv-ore{color:var(--text);font-size:1.1rem;font-weight:500;}
+.pv-linie{color:var(--accent);font-size:0.78rem;font-weight:500;}
+.pv-extra{color:var(--orange);font-size:0.65rem;}
+.pv-empty{color:var(--muted);font-size:0.66rem;}
+.modal-btns{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:14px;}
+.btn-save{padding:16px 12px;border-radius:10px;border:none;background:var(--blue);color:#fff;font-family:'DM Mono',monospace;font-size:0.78rem;font-weight:500;cursor:pointer;min-height:50px;}
+.btn-cancel{padding:16px 12px;border-radius:10px;border:1px solid var(--border);background:transparent;color:var(--muted);font-family:'DM Mono',monospace;font-size:0.78rem;cursor:pointer;min-height:50px;}
+
+.toast{position:fixed;bottom:28px;left:50%;transform:translateX(-50%);background:var(--accent);color:#0d0d12;font-family:'DM Mono',monospace;font-size:0.72rem;font-weight:500;padding:9px 20px;border-radius:20px;z-index:300;opacity:0;transition:opacity .25s;pointer-events:none;white-space:nowrap;}
+.toast.show{opacity:1;}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Program 2026</h1>
+  <p>Șofer autobuz · Editabil</p>
+  <button class="theme-btn" onclick="toggleTheme()" id="theme-btn">☀️</button>
+</header>
+
+<div class="today-widget" id="today-widget"></div>
+<div class="countdown-bar" id="countdown-bar"></div>
+
+<div class="toolbar">
+  <button class="tb-btn prim" onclick="jumpToToday()">📍 Azi</button>
+  <button class="tb-btn prim" onclick="jumpToWeek()">📅 Săptămâna</button>
+  <button class="tb-btn" onclick="toggleStats()">📊 Statistici</button>
+</div>
+
+<div class="stats-panel" id="stats-panel">
+  <div class="stats-title" id="stats-title">Statistici</div>
+  <div class="stats-grid" id="stats-grid"></div>
+</div>
+
+<div class="month-tabs" id="month-tabs"></div>
+
+<div class="view-toggle">
+  <button class="vt-btn act" id="vt-luna" onclick="setView('luna')">📅 Lunar</button>
+  <button class="vt-btn" id="vt-sapt" onclick="setView('sapt')">📆 Săptămânal</button>
+</div>
+
+<div class="legend">
+  <div class="li"><div class="dot" style="background:var(--blue)"></div>Lucru</div>
+  <div class="li"><div class="dot" style="background:var(--orange)"></div>Ore extra</div>
+  <div class="li"><div class="dot" style="background:var(--purple)"></div>Weekend</div>
+  <div class="li"><div class="dot" style="background:var(--green)"></div>Liber</div>
+  <div class="li"><div class="dot" style="background:var(--red)"></div>CO</div>
+  <div class="li"><div class="dot" style="background:var(--teal)"></div>CM</div>
+  <div class="li"><div class="dot" style="background:var(--sarb)"></div>Sărbătoare</div>
+</div>
+
+<div id="month-view"></div>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="modal">
+  <div class="modal">
+    <div class="modal-title" id="mtitle"></div>
+    <div class="modal-sub" id="msub"></div>
+    <span class="m-lbl">Acțiuni rapide</span>
+    <div class="quick-grid">
+      <button class="q-btn q-libre" onclick="setQ('liber')">🟢 Liber</button>
+      <button class="q-btn q-co" onclick="setQ('co')">🔴 CO</button>
+      <button class="q-btn q-cm" onclick="setQ('cm')">🏥 CM</button>
+      <button class="q-btn q-sarb" onclick="setQ('sarb')">🎉 Sarb.</button>
+      <button class="q-btn q-del" onclick="setQ('gol')">✕ Șterge</button>
+    </div>
+    <div class="m-div"></div>
+    <span class="m-lbl">Completează tura</span>
+    <div class="inp-row">
+      <div class="inp-group">
+        <span class="inp-lbl">Linia</span>
+        <input class="inp" id="inp-linie" type="text" placeholder="335" maxlength="8" oninput="updatePreview()">
+      </div>
+      <div class="inp-group">
+        <span class="inp-lbl">Tur</span>
+        <input class="inp" id="inp-tur" type="text" placeholder="4" maxlength="6" oninput="updatePreview()">
+      </div>
+    </div>
+    <div class="inp-row">
+      <div class="inp-group">
+        <span class="inp-lbl">Ora start</span>
+        <input class="inp" id="inp-start" type="time" oninput="updatePreview()">
+      </div>
+      <div class="inp-group">
+        <span class="inp-lbl">Ora finish</span>
+        <input class="inp" id="inp-end" type="time" oninput="updatePreview()">
+      </div>
+    </div>
+    <div class="inp-group" style="margin-bottom:8px">
+      <span class="inp-lbl">Notă (opțional)</span>
+      <textarea class="inp" id="inp-nota" rows="2" placeholder="ex: schimb cu Ionescu, mașina 214..."></textarea>
+    </div>
+    <div class="preview" id="preview">
+      <span class="pv-empty">Completează datele de mai sus</span>
+    </div>
+    <div class="modal-btns">
+      <button class="btn-cancel" onclick="closeM()">Anulează</button>
+      <button class="btn-save" onclick="saveD()">✓ Salvează</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const SARB={
+  "2026-1-1":"Anul Nou","2026-1-2":"Anul Nou",
+  "2026-4-10":"Vinerea Mare","2026-4-12":"Paște","2026-4-13":"Paște",
+  "2026-5-1":"Ziua Muncii","2026-5-3":"Duminica Tomii",
+  "2026-6-1":"Ziua Copilului","2026-6-11":"Înălțarea",
+  "2026-6-21":"Rusalii","2026-6-22":"Rusalii",
+  "2026-8-15":"Sf. Maria","2026-11-30":"Sf. Andrei",
+  "2026-12-1":"Ziua Națională","2026-12-25":"Crăciun","2026-12-26":"Crăciun"
+};
+const LUNI=[
+  {i:0,n:"Ianuarie",a:2026,l:1,z:31},{i:1,n:"Februarie",a:2026,l:2,z:28},
+  {i:2,n:"Martie",a:2026,l:3,z:31},{i:3,n:"Aprilie",a:2026,l:4,z:30},
+  {i:4,n:"Mai",a:2026,l:5,z:31},{i:5,n:"Iunie",a:2026,l:6,z:30},
+  {i:6,n:"Iulie",a:2026,l:7,z:31},{i:7,n:"August",a:2026,l:8,z:31},
+  {i:8,n:"Sept.",a:2026,l:9,z:30},{i:9,n:"Oct.",a:2026,l:10,z:31},
+  {i:10,n:"Nov.",a:2026,l:11,z:30},{i:11,n:"Dec.",a:2026,l:12,z:31}
+];
+const ZN=["Duminică","Luni","Marți","Miercuri","Joi","Vineri","Sâmbătă"];
+const ZNS=["Du","Lu","Ma","Mi","Jo","Vi","Sâ"];
+const TODAY=new Date();
+const NORMA=8*60;
+
+let MEM={};
+try{const d=localStorage.getItem('program_sofer_2026');if(d)MEM=JSON.parse(d)||{};}catch(e){}
+function _save(){try{localStorage.setItem('program_sofer_2026',JSON.stringify(MEM));}catch(e){}}
+function nz(a,l,z){return ZN[new Date(a,l-1,z).getDay()];}
+function isWE(a,l,z){const d=new Date(a,l-1,z).getDay();return d===0||d===6;}
+function isTD(a,l,z){return TODAY.getFullYear()===a&&TODAY.getMonth()===l-1&&TODAY.getDate()===z;}
+function gs(a,l,z){return MEM[`${a}-${l}-${z}`]||{t:'gol'};}
+function ss(a,l,z,v){if(v.t==='gol'){delete MEM[`${a}-${l}-${z}`];}else{MEM[`${a}-${l}-${z}`]=v;}_save();}
+function getSarb(a,l,z){return SARB[`${a}-${l}-${z}`]||null;}
+function calcOre(i,r){
+  if(!i||!r)return 0;
+  const[ih,im]=i.split(':').map(Number);const[rh,rm]=r.split(':').map(Number);
+  let s=ih*60+im,e=rh*60+rm;if(e<=s)e+=1440;return e-s;
+}
+function fmtOre(min){if(min<=0)return'0h';const h=Math.floor(min/60),m=min%60;return m>0?`${h}h ${m}m`:`${h}h`;}
+function extraMin(min){return Math.max(0,min-NORMA);}
+
+// THEME
+let dark=true;
+try{const t=localStorage.getItem('theme_sofer');if(t)dark=(t==='dark');}catch(e){}
+function applyTheme(){document.body.classList.toggle('light',!dark);document.getElementById('theme-btn').textContent=dark?'☀️':'🌙';}
+function toggleTheme(){dark=!dark;try{localStorage.setItem('theme_sofer',dark?'dark':'light');}catch(e){}applyTheme();}
+applyTheme();
+
+// VIEW
+let view='luna',weekOff=0;
+function setView(v){
+  view=v;
+  document.getElementById('vt-luna').className='vt-btn'+(v==='luna'?' act':'');
+  document.getElementById('vt-sapt').className='vt-btn'+(v==='sapt'?' act':'');
+  if(v==='sapt'){weekOff=0;renderWeek();}else rMonth();
+}
+
+// COUNTDOWN
+function renderCountdown(){
+  const now=new Date();
+  const dow=now.getDay();
+  const toWE=dow===0||dow===6?0:(6-dow);
+  const toEM=new Date(now.getFullYear(),now.getMonth()+1,0).getDate()-now.getDate();
+  const toEY=Math.round((new Date(now.getFullYear(),11,31)-now)/86400000);
+  document.getElementById('countdown-bar').innerHTML=`
+    <div class="cd-item"><div class="cd-val" style="color:var(--purple)">${toWE===0?'🎉':toWE}</div><div class="cd-lbl">până weekend</div></div>
+    <div class="cd-div"></div>
+    <div class="cd-item"><div class="cd-val" style="color:var(--blue)">${toEM}</div><div class="cd-lbl">până sf. lunii</div></div>
+    <div class="cd-div"></div>
+    <div class="cd-item"><div class="cd-val" style="color:var(--muted)">${toEY}</div><div class="cd-lbl">până sf. anului</div></div>`;
+}
+
+// TABS
+function rTabs(){
+  const tabs=document.getElementById('month-tabs');tabs.innerHTML='';
+  LUNI.forEach((l,i)=>{
+    const hd=Object.keys(MEM).some(k=>k.startsWith(`${l.a}-${l.l}-`));
+    const b=document.createElement('button');
+    b.className='month-tab'+(i===window.LA?' active':'')+(hd?' has-data':'');
+    b.textContent=l.n;
+    b.onclick=()=>{window.LA=i;rTabs();view==='luna'?rMonth():(weekOff=0,renderWeek());};
+    tabs.appendChild(b);
+  });
+}
+
+// WEEK VIEW
+function getWeekStart(off){
+  const luna=LUNI[window.LA];
+  const fd=new Date(luna.a,luna.l-1,1).getDay();
+  const fm=fd===1?1:fd===0?2:(9-fd);
+  return fm+off*7;
+}
+function renderWeek(){
+  const v=document.getElementById('month-view');v.innerHTML='';
+  const luna=LUNI[window.LA];
+  const ws=getWeekStart(weekOff);
+
+  const nav=document.createElement('div');nav.className='week-nav';
+  nav.innerHTML=`<button class="week-nav-btn" onclick="prevWeek()">◀</button><div class="week-label">${luna.n} ${luna.a} · Săpt. ${weekOff+1}</div><button class="week-nav-btn" onclick="nextWeek()">▶</button>`;
+  v.appendChild(nav);
+
+  const grid=document.createElement('div');grid.className='week-grid';
+  let wMin=0,wLucru=0,wExtra=0;
+  const days=[];
+  for(let i=0;i<7;i++){const d=ws+i;days.push((d>=1&&d<=luna.z)?d:null);}
+
+  days.forEach(d=>{
+    const cell=document.createElement('div');
+    if(!d){cell.className='wg-day empty';grid.appendChild(cell);return;}
+    const s=gs(luna.a,luna.l,d);
+    const sarb=getSarb(luna.a,luna.l,d);
+    const td=isTD(luna.a,luna.l,d);
+    const we=isWE(luna.a,luna.l,d);
+    let cls='wg-day'+(td?' today':sarb?' sarb-d':we?' we':'');
+    cell.className=cls;
+    cell.onclick=()=>openM(luna.a,luna.l,d);
+    const numCls='wg-num'+(td?' td':we?' we':'');
+    let dotClr='transparent',oreHtml='';
+    if(s.t==='lucru'){dotClr='var(--blue)';const m=calcOre(s.start,s.end);wMin+=m;wLucru++;wExtra+=extraMin(m);oreHtml=s.start?`<div class="wg-ore">${s.start}<br>${s.end||''}</div>`:''}
+    else if(s.t==='liber')dotClr='var(--green)';
+    else if(s.t==='co')dotClr='var(--red)';
+    else if(s.t==='cm')dotClr='var(--teal)';
+    else if(s.t==='sarb'||sarb)dotClr='var(--sarb)';
+    cell.innerHTML=`<div class="wg-dn">${ZNS[new Date(luna.a,luna.l-1,d).getDay()]}</div><div class="${numCls}">${d}</div><div class="wg-dot" style="background:${dotClr}"></div>${oreHtml}`;
+    grid.appendChild(cell);
+  });
+  v.appendChild(grid);
+
+  const ws2=document.createElement('div');ws2.className='week-stats';
+  ws2.innerHTML=`
+    <div class="ws-box"><div class="ws-val" style="color:var(--green)">${fmtOre(wMin)}</div><div class="ws-lbl">Total ore</div></div>
+    <div class="ws-box"><div class="ws-val" style="color:var(--blue)">${wLucru}</div><div class="ws-lbl">Zile lucrate</div></div>
+    <div class="ws-box"><div class="ws-val" style="color:var(--orange)">${fmtOre(wExtra)}</div><div class="ws-lbl">Ore extra</div></div>`;
+  v.appendChild(ws2);
+
+  days.forEach(d=>{if(d)v.appendChild(rDay(luna.a,luna.l,d));});
+}
+function prevWeek(){weekOff=Math.max(0,weekOff-1);renderWeek();}
+function nextWeek(){weekOff++;renderWeek();}
+
+// MONTH
+function rMonth(){
+  const luna=LUNI[window.LA];
+  const v=document.getElementById('month-view');v.innerHTML='';
+  let lc=0,tMin=0;
+  for(let d=1;d<=luna.z;d++){const s=gs(luna.a,luna.l,d);if(s.t==='lucru'){lc++;tMin+=calcOre(s.start,s.end);}}
+  const h=document.createElement('div');h.className='month-header';
+  const oreStr=tMin>0?` · <span style="color:var(--green)">${fmtOre(tMin)}</span>`:'';
+  h.innerHTML=`<div class="month-title">${luna.n} ${luna.a}</div><div class="month-stats">${lc} zile lucrate${oreStr}</div>`;
+  v.appendChild(h);
+  for(let d=1;d<=luna.z;d++)v.appendChild(rDay(luna.a,luna.l,d));
+  if(tMin>0){
+    const f=document.createElement('div');
+    f.style.cssText='margin:14px 0 8px;padding:12px 16px;background:var(--card);border:1px solid var(--border);border-radius:12px;display:flex;justify-content:space-between;align-items:center;';
+    f.innerHTML=`<div style="font-size:0.65rem;color:var(--muted);text-transform:uppercase;letter-spacing:0.1em">Total ore lucrate</div><div style="font-family:'Syne',sans-serif;font-size:1.4rem;font-weight:800;color:var(--green)">${fmtOre(tMin)}</div>`;
+    v.appendChild(f);
+  }
+}
+
+// DAY
+let clipboard=null;
+function rDay(a,luna,z){
+  const s=gs(a,luna,z);
+  const sarb=getSarb(a,luna,z);
+  const td=isTD(a,luna,z);
+  const nZ=nz(a,luna,z);
+  const we=isWE(a,luna,z);
+  const ore=s.t==='lucru'?calcOre(s.start,s.end):0;
+  const ex=extraMin(ore);
+
+  const card=document.createElement('div');
+  let cls='day-card';
+  if(td)cls+=' today-card';
+  else if(sarb&&s.t==='gol')cls+=' sarb-card';
+  else if(we&&!sarb)cls+=' we-card';
+  card.className=cls;
+
+  let bc='tb-gol',bt='—';
+  if(s.t==='liber'){bc='tb-libre';bt='Liber';}
+  else if(s.t==='co'){bc='tb-co';bt='CO';}
+  else if(s.t==='cm'){bc='tb-cm';bt='CM';}
+  else if(s.t==='sarb'){bc='tb-sarb';bt='Sărbătoare';}
+  else if(s.t==='lucru'){bc='tb-lucru';bt=s.linie?'L'+s.linie+(s.tur?' T'+s.tur:''):'Lucru';}
+
+  const numCls='day-num'+(td?' today-num':'')+(sarb?' sarb-num':we?' we-num':'');
+  const sublbl=s.t==='lucru'&&(s.start||s.end)?`${s.start||'?'} → ${s.end||'?'}`:'';
+  const exBadge=ex>0?`<span class="extra-badge">+${fmtOre(ex)}</span>`:'';
+  const isPasteMode=!!clipboard;
+
+  let html=`<div class="day-header">
+    <div class="day-left">
+      <div class="${numCls}">${z}</div>
+      <div>
+        <div class="day-name">${nZ}${td?' ★':''}</div>
+        ${sarb?`<div class="sarb-lbl">🎉 ${sarb}</div>`:''}
+        ${sublbl?`<div class="day-type-lbl">${sublbl}</div>`:''}
+      </div>
+    </div>
+    <div class="right-col"><span class="tur-badge ${bc}">${bt}</span>${exBadge}</div>
+  </div>`;
+
+  if(s.t==='sarb')html+=`<div class="state-block st-sarb">🎉 Sărbătoare legală${sarb?' — '+sarb:''}</div>`;
+  else if(s.t==='co')html+=`<div class="state-block st-co">🔴 Concediu de odihnă</div>`;
+  else if(s.t==='cm')html+=`<div class="state-block st-cm">🏥 Concediu medical</div>`;
+  else if(s.t==='liber')html+=`<div class="state-block st-libre">🟢 Zi liberă</div>`;
+  else if(s.t==='lucru'){
+    const lt=s.linie?'Linia '+s.linie+(s.tur?', Tur '+s.tur:''):'Tură completată';
+    html+=`<div class="shift-display"><div class="shift-block">
+      <div class="s-lbl">🚌 Tură de lucru</div>
+      <div class="linie-info">${lt}</div>
+      <div class="ore-row"><span class="t">${s.start||'--:--'}</span><span class="sep">→</span><span class="t">${s.end||'--:--'}</span>${ore>0?`<span style="font-size:0.6rem;color:var(--muted);margin-left:6px">${fmtOre(ore)}</span>`:''}</div>
+      ${ex>0?`<div class="ore-extra">⚡ +${fmtOre(ex)} ore suplimentare față de norma 8h</div>`:''}
+      ${s.nota?`<div class="nota-display">📝 ${s.nota}</div>`:''}
+    </div></div>`;
+  } else {
+    html+=`<div class="state-block st-gol">${sarb?'🎉 Sărbătoare — apasă pentru completare':'Apasă pentru a completa ziua'}</div>`;
+  }
+
+  html+=`<div class="day-actions">
+    <button class="edit-btn" onclick="openM(${a},${luna},${z})">✏️ Modifică</button>
+    <button class="copy-btn${isPasteMode?' paste-mode':''}" onclick="handleCopy(${a},${luna},${z})">${isPasteMode?'📋 Lipește':'📄 Copiază'}</button>
+  </div>`;
+  card.innerHTML=html;
+  return card;
+}
+
+// CLIPBOARD
+function handleCopy(a,luna,z){
+  const s=gs(a,luna,z);
+  if(clipboard){
+    if(s.t!=='gol'&&!confirm('Ziua are deja date. Suprascrii?'))return;
+    ss(a,luna,z,{...clipboard});
+    clipboard=null;
+    showToast('✅ Tură lipită!');
+  } else {
+    if(s.t!=='lucru'){showToast('⚠️ Nimic de copiat — completează mai întâi tura');return;}
+    clipboard={...s};
+    showToast('📄 Copiat! Apasă Lipește pe altă zi');
+  }
+  refresh();
+}
+
+function showToast(msg){
+  const t=document.getElementById('toast');
+  t.textContent=msg;t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),2800);
+}
+
+// MODAL
+let mA,mL,mZ;
+function openM(a,l,z){
+  mA=a;mL=l;mZ=z;
+  const s=gs(a,l,z);
+  const sarb=getSarb(a,l,z);
+  const lo=LUNI.find(x=>x.l===l&&x.a===a);
+  document.getElementById('mtitle').textContent=`${z} ${nz(a,l,z)}`;
+  document.getElementById('msub').textContent=(sarb?'🎉 '+sarb+' · ':'')+lo?.n+' '+a;
+  document.getElementById('inp-linie').value=s.linie||'';
+  document.getElementById('inp-tur').value=s.tur||'';
+  document.getElementById('inp-start').value=s.start||'';
+  document.getElementById('inp-end').value=s.end||'';
+  document.getElementById('inp-nota').value=s.nota||'';
+  updatePreview();
+  document.getElementById('modal').classList.add('active');
+}
+function closeM(){document.getElementById('modal').classList.remove('active');}
+function updatePreview(){
+  const linie=document.getElementById('inp-linie').value.trim();
+  const tur=document.getElementById('inp-tur').value.trim();
+  const start=document.getElementById('inp-start').value;
+  const end=document.getElementById('inp-end').value;
+  const box=document.getElementById('preview');
+  if(!linie&&!tur&&!start&&!end){box.innerHTML='<span class="pv-empty">Completează datele de mai sus</span>';return;}
+  const lt=linie?'Linia '+linie+(tur?', Tur '+tur:''):(tur?'Tur '+tur:'');
+  const min=calcOre(start,end);
+  const ex=extraMin(min);
+  const ot=(start&&end)?`${start} → ${end} (${fmtOre(min)})`:(start||end?`${start||'?'} → ${end||'?'}`:'');
+  box.innerHTML=`${lt?`<span class="pv-linie">🚌 ${lt}</span>`:''}${ot?`<span class="pv-ore">${ot}</span>`:''}${ex>0?`<span class="pv-extra">⚡ +${fmtOre(ex)} ore suplimentare</span>`:''}`;
+}
+function setQ(t){ss(mA,mL,mZ,{t});refresh();closeM();}
+function saveD(){
+  const linie=document.getElementById('inp-linie').value.trim();
+  const tur=document.getElementById('inp-tur').value.trim();
+  const start=document.getElementById('inp-start').value;
+  const end=document.getElementById('inp-end').value;
+  const nota=document.getElementById('inp-nota').value.trim();
+  if(!linie&&!tur&&!start&&!end){closeM();return;}
+  ss(mA,mL,mZ,{t:'lucru',linie,tur,start,end,nota});
+  refresh();closeM();
+}
+document.getElementById('modal').addEventListener('click',function(e){if(e.target===this)closeM();});
+
+// WIDGET AZI
+function renderTodayWidget(){
+  const w=document.getElementById('today-widget');
+  const a=TODAY.getFullYear(),l=TODAY.getMonth()+1,z=TODAY.getDate();
+  const lo=LUNI.find(x=>x.a===a&&x.l===l);
+  if(!lo){w.style.display='none';return;}
+  w.style.display='';
+  const s=gs(a,l,z);const sarb=getSarb(a,l,z);
+  const nZ=ZN[new Date(a,l-1,z).getDay()];
+  let body='';
+  if(s.t==='liber')body=`<div class="tw-libre">🟢 Zi liberă</div>`;
+  else if(s.t==='co')body=`<div class="tw-co">🔴 Concediu de odihnă</div>`;
+  else if(s.t==='cm')body=`<div class="tw-cm">🏥 Concediu medical</div>`;
+  else if(s.t==='sarb')body=`<div class="tw-sarb">🎉 ${sarb||'Sărbătoare'}</div>`;
+  else if(s.t==='lucru'){
+    const ore=calcOre(s.start,s.end);const ex=extraMin(ore);
+    const lt=s.linie?'Linia '+s.linie+(s.tur?', Tur '+s.tur:''):(s.tur?'Tur '+s.tur:'Tură');
+    body=`<div class="tw-ore">${s.start||'--:--'} <span style="font-size:1rem;color:var(--muted)">→</span> ${s.end||'--:--'}</div>
+      <div class="tw-sub">${lt}${ore>0?' · '+fmtOre(ore):''}</div>
+      ${ex>0?`<div class="tw-extra">⚡ +${fmtOre(ex)} ore suplimentare</div>`:''}
+      ${s.nota?`<div class="tw-nota">📝 ${s.nota}</div>`:''}`;
+  } else body=`<div class="tw-gol">Ziua necompletată — apasă ✏️</div>`;
+  w.innerHTML=`<div class="tw-header"><div class="tw-title">⏰ Astăzi</div><div class="tw-data">${z} ${nZ} · ${lo.n} ${a}</div></div><div class="tw-body">${body}</div><button class="tw-edit" onclick="openM(${a},${l},${z})">✏️ Modifică</button>`;
+}
+
+// STATS
+let statsOpen=false;
+function toggleStats(){
+  statsOpen=!statsOpen;
+  const p=document.getElementById('stats-panel');
+  if(statsOpen){renderStats();p.classList.add('open');}else p.classList.remove('open');
+}
+function renderStats(){
+  const luna=LUNI[window.LA];
+  let liber=0,co=0,cm=0,lucru=0,tMin=0,exMin=0,zlCalend=0,sarb=0;
+  for(let d=1;d<=luna.z;d++){
+    const dow=new Date(luna.a,luna.l-1,d).getDay();
+    const isSarb=!!getSarb(luna.a,luna.l,d);
+    if(dow!==0&&dow!==6&&!isSarb)zlCalend++;
+    const s=gs(luna.a,luna.l,d);
+    if(s.t==='liber')liber++;
+    else if(s.t==='co')co++;
+    else if(s.t==='cm')cm++;
+    else if(s.t==='sarb'||isSarb)sarb++;
+    else if(s.t==='lucru'){lucru++;const m=calcOre(s.start,s.end);tMin+=m;exMin+=extraMin(m);}
+  }
+  const med=lucru>0?Math.round(tMin/lucru):0;
+  document.getElementById('stats-title').textContent=`Statistici — ${luna.n} ${luna.a}`;
+  document.getElementById('stats-grid').innerHTML=`
+    <div class="stat-box"><div class="stat-val" style="color:var(--muted)">${zlCalend}</div><div class="stat-lbl">Zile lucr. în lună</div></div>
+    <div class="stat-box"><div class="stat-val" style="color:var(--blue)">${lucru}</div><div class="stat-lbl">Zile lucrate</div></div>
+    <div class="stat-box"><div class="stat-val" style="color:var(--green)">${liber}</div><div class="stat-lbl">Zile libere</div></div>
+    <div class="stat-box"><div class="stat-val" style="color:var(--red)">${co}</div><div class="stat-lbl">Zile CO</div></div>
+    <div class="stat-box"><div class="stat-val" style="color:var(--teal)">${cm}</div><div class="stat-lbl">Zile CM</div></div>
+    <div class="stat-box"><div class="stat-val" style="color:var(--sarb)">${sarb}</div><div class="stat-lbl">Sărbători</div></div>
+    <div class="stats-sep"></div>
+    <div class="stats-sub">⏱ Ore de muncă</div>
+    <div class="stat-box stat-full"><div class="stat-val" style="color:var(--accent)">${fmtOre(tMin)}</div><div class="stat-lbl">Total ore lucrate</div></div>
+    <div class="stat-box"><div class="stat-val" style="color:var(--orange)">${fmtOre(exMin)}</div><div class="stat-lbl">Ore suplimentare</div></div>
+    <div class="stat-box"><div class="stat-val" style="color:var(--muted)">${fmtOre(med)}</div><div class="stat-lbl">Medie ore / zi</div></div>`;
+}
+
+// TOOLBAR
+function refresh(){view==='luna'?rMonth():renderWeek();rTabs();renderTodayWidget();if(statsOpen)renderStats();}
+function jumpToToday(){
+  const idx=LUNI.findIndex(x=>x.l===TODAY.getMonth()+1&&x.a===TODAY.getFullYear());
+  if(idx>=0){window.LA=idx;rTabs();view==='luna'?rMonth():(weekOff=0,renderWeek());}
+  setTimeout(()=>{const c=document.querySelectorAll('.today-card');if(c.length)c[0].scrollIntoView({behavior:'smooth',block:'center'});},100);
+}
+function jumpToWeek(){setView('sapt');}
+
+// INIT
+let LA=0;
+LUNI.forEach((l,i)=>{if(l.a===TODAY.getFullYear()&&l.l===TODAY.getMonth()+1)LA=i;});
+window.LA=LA;
+renderCountdown();rTabs();rMonth();renderTodayWidget();
+</script>
+</body>
+</html>
