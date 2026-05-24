@@ -1,0 +1,150 @@
+{
+  "name": "SmartTravel AI – Vacanța ta perfectă",
+  "short_name": "SmartTravel",
+  "description": "Agregator inteligent de vacanțe, oferte last-minute, city break-uri și bilete de avion în timp real. Powered by AI.",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "display_override": ["window-controls-overlay", "standalone", "minimal-ui"],
+  "orientation": "portrait-primary",
+  "background_color": "#050810",
+  "theme_color": "#0a0f1e",
+  "lang": "ro",
+  "dir": "ltr",
+  "categories": ["travel", "lifestyle", "shopping"],
+  "iarc_rating_id": "",
+  "prefer_related_applications": false,
+
+  "icons": [
+    {
+      "src": "icons/icon-72.png",
+      "sizes": "72x72",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icons/icon-96.png",
+      "sizes": "96x96",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icons/icon-128.png",
+      "sizes": "128x128",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icons/icon-144.png",
+      "sizes": "144x144",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icons/icon-152.png",
+      "sizes": "152x152",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "icons/icon-384.png",
+      "sizes": "384x384",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+
+  "screenshots": [
+    {
+      "src": "screenshots/screenshot-mobile.png",
+      "sizes": "390x844",
+      "type": "image/png",
+      "form_factor": "narrow",
+      "label": "SmartTravel AI – Ecran principal mobil"
+    },
+    {
+      "src": "screenshots/screenshot-desktop.png",
+      "sizes": "1280x800",
+      "type": "image/png",
+      "form_factor": "wide",
+      "label": "SmartTravel AI – Ecran principal desktop"
+    }
+  ],
+
+  "shortcuts": [
+    {
+      "name": "Caută Last Minute",
+      "short_name": "Last Minute",
+      "description": "Găsește rapid oferte last-minute disponibile acum",
+      "url": "./index.html?q=last+minute&type=last-minute",
+      "icons": [
+        {
+          "src": "icons/shortcut-lastminute.png",
+          "sizes": "96x96",
+          "type": "image/png"
+        }
+      ]
+    },
+    {
+      "name": "City Break-uri",
+      "short_name": "City Break",
+      "description": "Explorează city break-uri pentru weekend",
+      "url": "./index.html?q=city+break&type=city-break",
+      "icons": [
+        {
+          "src": "icons/shortcut-citybreak.png",
+          "sizes": "96x96",
+          "type": "image/png"
+        }
+      ]
+    },
+    {
+      "name": "Sejururi Litoral",
+      "short_name": "Litoral",
+      "description": "Caută sejururi la mare și pe litoral",
+      "url": "./index.html?q=sejur+litoral&type=litoral",
+      "icons": [
+        {
+          "src": "icons/shortcut-litoral.png",
+          "sizes": "96x96",
+          "type": "image/png"
+        }
+      ]
+    }
+  ],
+
+  "share_target": {
+    "action": "./index.html",
+    "method": "GET",
+    "params": {
+      "title": "q",
+      "text": "q",
+      "url": "url"
+    }
+  },
+
+  "protocol_handlers": [
+    {
+      "protocol": "web+smarttravel",
+      "url": "./index.html?q=%s"
+    }
+  ],
+
+  "related_applications": [],
+
+  "edge_side_panel": {
+    "preferred_width": 400
+  }
+}
