@@ -1,0 +1,904 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#0a0f1e" />
+  <meta name="description" content="SmartTravel AI – Găsește vacanța perfectă cu ajutorul inteligenței artificiale. Oferte last-minute, city break-uri, zboruri și hoteluri în timp real." />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="SmartTravel AI" />
+  <meta name="mobile-web-app-capable" content="yes" />
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="SmartTravel AI" />
+  <meta property="og:description" content="Agregator inteligent de vacanțe și oferte travel în timp real." />
+  <meta property="og:type" content="website" />
+
+  <title>SmartTravel AI – Vacanța ta perfectă</title>
+
+  <link rel="manifest" href="manifest.json" />
+  <link rel="apple-touch-icon" href="icons/icon-192.png" />
+  <link rel="icon" type="image/png" sizes="32x32" href="icons/icon-32.png" />
+  <link rel="stylesheet" href="style.css" />
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet" />
+</head>
+<body>
+
+  <!-- ========== INSTALL BANNER ========== -->
+  <div id="install-banner" class="install-banner hidden">
+    <div class="install-banner__inner">
+      <span class="install-banner__icon">✈️</span>
+      <div class="install-banner__text">
+        <strong>Instalează SmartTravel AI</strong>
+        <span>Acces instant, fără browser</span>
+      </div>
+      <button id="install-btn" class="btn btn--accent btn--sm">Instalează</button>
+      <button id="install-dismiss" class="install-banner__close" aria-label="Închide">✕</button>
+    </div>
+  </div>
+
+  <!-- ========== HEADER ========== -->
+  <header class="site-header">
+    <div class="container site-header__inner">
+      <a href="#" class="logo" aria-label="SmartTravel AI – acasă">
+        <span class="logo__mark">✦</span>
+        <span class="logo__name">SmartTravel<em>AI</em></span>
+      </a>
+      <nav class="site-nav" aria-label="Navigare principală">
+        <a href="#search-section" class="site-nav__link">Căutare</a>
+        <a href="#flights-section" class="site-nav__link">✈️ Bilete Avion</a>
+        <a href="#destinations-section" class="site-nav__link">Destinații</a>
+        <a href="#about-section" class="site-nav__link">Despre</a>
+      </nav>
+      <button class="hamburger" id="hamburger" aria-label="Meniu" aria-expanded="false" aria-controls="mobile-nav">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+    <nav class="mobile-nav hidden" id="mobile-nav" aria-label="Navigare mobilă">
+      <a href="#search-section" class="mobile-nav__link">🔍 Căutare</a>
+      <a href="#flights-section" class="mobile-nav__link">✈️ Bilete Avion</a>
+      <a href="#destinations-section" class="mobile-nav__link">🌍 Destinații</a>
+      <a href="#about-section" class="mobile-nav__link">ℹ Despre</a>
+    </nav>
+  </header>
+
+  <!-- ========== HERO ========== -->
+  <section class="hero" aria-labelledby="hero-title">
+    <div class="hero__bg-orbs" aria-hidden="true">
+      <div class="orb orb--1"></div>
+      <div class="orb orb--2"></div>
+      <div class="orb orb--3"></div>
+    </div>
+    <div class="hero__grid-overlay" aria-hidden="true"></div>
+
+    <div class="container hero__content">
+      <div class="hero__badge" aria-label="Powered by AI">
+        <span class="badge__pulse"></span>
+        AI · Live Prices · Real-Time
+      </div>
+      <h1 id="hero-title" class="hero__title">
+        Vacanța ta perfectă,<br />
+        <span class="hero__title--accent">găsită în secunde.</span>
+      </h1>
+      <p class="hero__subtitle">
+        Descrie în cuvinte proprii ce vacanță vrei. Sistemul nostru AI parcurge sute de oferte live și îți prezintă doar cele mai bune.
+      </p>
+      <a href="#search-section" class="btn btn--hero">
+        Începe căutarea
+        <span class="btn__arrow">→</span>
+      </a>
+
+      <div class="hero__stats" aria-label="Statistici platformă">
+        <div class="hero__stat">
+          <strong>12K+</strong>
+          <span>Oferte live</span>
+        </div>
+        <div class="hero__stat-divider" aria-hidden="true"></div>
+        <div class="hero__stat">
+          <strong>48h</strong>
+          <span>Last-minute deal-uri</span>
+        </div>
+        <div class="hero__stat-divider" aria-hidden="true"></div>
+        <div class="hero__stat">
+          <strong>150+</strong>
+          <span>Destinații</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="hero__scroll-hint" aria-hidden="true">
+      <span>scroll</span>
+      <div class="scroll-line"></div>
+    </div>
+  </section>
+
+  <!-- ========== SEARCH SECTION ========== -->
+  <section id="search-section" class="search-section" aria-labelledby="search-title">
+    <div class="container">
+      <div class="section-label" aria-hidden="true">// Căutare inteligentă</div>
+      <h2 id="search-title" class="section-title">Spune-ne ce vrei.</h2>
+      <p class="section-subtitle">Scrie în limbaj natural sau folosește filtrele rapide de mai jos.</p>
+
+      <!-- Natural Language Search -->
+      <div class="search-box" role="search">
+        <div class="search-box__input-wrap">
+          <span class="search-box__icon" aria-hidden="true">🔍</span>
+          <input
+            type="text"
+            id="natural-search"
+            class="search-box__input"
+            placeholder="ex: City break în Roma pentru 2 persoane, hotel 4 stele, fără avion..."
+            autocomplete="off"
+            aria-label="Caută vacanța ta în limbaj natural"
+          />
+          <button class="search-box__clear hidden" id="clear-search" aria-label="Șterge textul">✕</button>
+        </div>
+        <button class="btn btn--search" id="search-btn" aria-label="Caută">
+          <span class="btn__text">Caută</span>
+          <span class="btn__spinner hidden" aria-hidden="true"></span>
+        </button>
+      </div>
+
+      <!-- Quick Suggestions -->
+      <div class="search-suggestions" aria-label="Sugestii căutare rapidă">
+        <button class="suggestion-chip" data-query="City break în Paris pentru 2 persoane cu avion">🗼 Paris city break</button>
+        <button class="suggestion-chip" data-query="Oferte last minute în Bulgaria pentru 4 persoane fără avion">🏖️ Bulgaria last minute</button>
+        <button class="suggestion-chip" data-query="Sejur litoral în Grecia pentru 3 persoane cu zbor">🇬🇷 Grecia litoral</button>
+        <button class="suggestion-chip" data-query="Weekend în Praga pentru 2 persoane cu avion hotel 3 stele">🏰 Praga weekend</button>
+        <button class="suggestion-chip" data-query="Oferte last minute Turcia tot inclusiv 2 persoane">🌙 Turcia all-inclusive</button>
+      </div>
+
+      <!-- Filters Panel -->
+      <div class="filters-panel" role="group" aria-label="Filtre căutare">
+        <div class="filter-group">
+          <label class="filter-label" id="type-label">Tipul vacanței</label>
+          <div class="filter-chips" role="radiogroup" aria-labelledby="type-label">
+            <button class="filter-chip filter-chip--active" data-filter="type" data-value="all" role="radio" aria-checked="true">Toate</button>
+            <button class="filter-chip" data-filter="type" data-value="last-minute" role="radio" aria-checked="false">🔥 Last Minute</button>
+            <button class="filter-chip" data-filter="type" data-value="city-break" role="radio" aria-checked="false">🏙️ City Break</button>
+            <button class="filter-chip" data-filter="type" data-value="litoral" role="radio" aria-checked="false">🏖️ Sejur Litoral</button>
+            <button class="filter-chip" data-filter="type" data-value="ski" role="radio" aria-checked="false">⛷️ Schi & Munte</button>
+          </div>
+        </div>
+
+        <div class="filter-group">
+          <label class="filter-label" id="transport-label">Transport</label>
+          <div class="filter-chips" role="radiogroup" aria-labelledby="transport-label">
+            <button class="filter-chip filter-chip--active" data-filter="transport" data-value="all" role="radio" aria-checked="true">Toate</button>
+            <button class="filter-chip" data-filter="transport" data-value="avion" role="radio" aria-checked="false">✈️ Cu Avion</button>
+            <button class="filter-chip" data-filter="transport" data-value="masina" role="radio" aria-checked="false">🚗 Cu Mașina</button>
+            <button class="filter-chip" data-filter="transport" data-value="autocar" role="radio" aria-checked="false">🚌 Autocar</button>
+          </div>
+        </div>
+
+        <div class="filter-group">
+          <label class="filter-label" id="persons-label">Număr persoane</label>
+          <div class="filter-chips" role="radiogroup" aria-labelledby="persons-label">
+            <button class="filter-chip filter-chip--active" data-filter="persons" data-value="0" role="radio" aria-checked="true">Orice</button>
+            <button class="filter-chip" data-filter="persons" data-value="1" role="radio" aria-checked="false">1 persoană</button>
+            <button class="filter-chip" data-filter="persons" data-value="2" role="radio" aria-checked="false">2 persoane</button>
+            <button class="filter-chip" data-filter="persons" data-value="3" role="radio" aria-checked="false">3 persoane</button>
+            <button class="filter-chip" data-filter="persons" data-value="4" role="radio" aria-checked="false">4+ persoane</button>
+          </div>
+        </div>
+
+        <!-- DATE PICKER -->
+        <div class="filter-group">
+          <label class="filter-label" id="date-label">Perioada călătoriei</label>
+
+          <!-- Mod selector: lună întreagă vs interval exact -->
+          <div class="date-mode-tabs" role="tablist" aria-label="Mod selectare perioadă">
+            <button class="date-mode-tab date-mode-tab--active" id="tab-month" role="tab" aria-selected="true" aria-controls="panel-month" data-mode="month">
+              📅 Lună
+            </button>
+            <button class="date-mode-tab" id="tab-range" role="tab" aria-selected="false" aria-controls="panel-range" data-mode="range">
+              📆 Interval exact
+            </button>
+            <button class="date-mode-tab" id="tab-flexible" role="tab" aria-selected="false" aria-controls="panel-flexible" data-mode="flexible">
+              🎲 Flexibil
+            </button>
+          </div>
+
+          <!-- Panel: Selectare lună -->
+          <div class="date-panel" id="panel-month" role="tabpanel" aria-labelledby="tab-month">
+            <div class="month-picker" id="month-picker" role="group" aria-label="Selectează luna">
+              <!-- Generat de JS -->
+            </div>
+          </div>
+
+          <!-- Panel: Interval exact -->
+          <div class="date-panel hidden" id="panel-range" role="tabpanel" aria-labelledby="tab-range">
+            <div class="date-range-inputs">
+              <div class="date-input-group">
+                <label for="date-from" class="date-input-label">Check-in / Plecare</label>
+                <div class="date-input-wrap">
+                  <span class="date-input-icon" aria-hidden="true">📅</span>
+                  <input
+                    type="date"
+                    id="date-from"
+                    class="date-input"
+                    aria-label="Data de plecare"
+                    min=""
+                  />
+                </div>
+              </div>
+              <div class="date-range-arrow" aria-hidden="true">→</div>
+              <div class="date-input-group">
+                <label for="date-to" class="date-input-label">Check-out / Întoarcere</label>
+                <div class="date-input-wrap">
+                  <span class="date-input-icon" aria-hidden="true">📅</span>
+                  <input
+                    type="date"
+                    id="date-to"
+                    class="date-input"
+                    aria-label="Data de întoarcere"
+                    min=""
+                  />
+                </div>
+              </div>
+            </div>
+            <div class="date-range-summary hidden" id="date-range-summary">
+              <span class="date-summary-text" id="date-summary-text"></span>
+              <button class="date-clear-btn" id="date-clear-btn" aria-label="Șterge intervalul">✕ Șterge</button>
+            </div>
+          </div>
+
+          <!-- Panel: Flexibil -->
+          <div class="date-panel hidden" id="panel-flexible" role="tabpanel" aria-labelledby="tab-flexible">
+            <div class="flexible-options">
+
+              <!-- Durata sejurului -->
+              <p class="flexible-desc">Câte zile / nopți vrei să stai?</p>
+              <div class="filter-chips duration-chips" role="radiogroup" aria-label="Durata sejurului">
+                <button class="filter-chip filter-chip--active" data-flex="nights" data-value="0" role="radio" aria-checked="true">⬜ Orice</button>
+                <button class="filter-chip" data-flex="nights" data-value="2" role="radio" aria-checked="false">2 nopți</button>
+                <button class="filter-chip" data-flex="nights" data-value="3" role="radio" aria-checked="false">3 nopți</button>
+                <button class="filter-chip" data-flex="nights" data-value="5" role="radio" aria-checked="false">5 nopți</button>
+                <button class="filter-chip" data-flex="nights" data-value="7" role="radio" aria-checked="false">7 nopți</button>
+                <button class="filter-chip" data-flex="nights" data-value="10" role="radio" aria-checked="false">10+ nopți</button>
+                <button class="filter-chip" data-flex="nights" data-value="14" role="radio" aria-checked="false">2 săptămâni</button>
+              </div>
+
+              <!-- Selector luni -->
+              <p class="flexible-desc" style="margin-top:16px;">În ce lună vrei să pleci?</p>
+              <div class="month-flex-grid" id="month-flex-grid" role="radiogroup" aria-label="Selectează luna de plecare">
+                <!-- 2026 -->
+                <div class="month-flex-year">2026</div>
+                <button class="month-flex-btn" data-flex="month" data-value="2026-06" role="radio" aria-checked="false">
+                  <span class="mfb-name">Iun</span><span class="mfb-season">☀️</span>
+                </button>
+                <button class="month-flex-btn" data-flex="month" data-value="2026-07" role="radio" aria-checked="false">
+                  <span class="mfb-name">Iul</span><span class="mfb-season">☀️</span>
+                </button>
+                <button class="month-flex-btn" data-flex="month" data-value="2026-08" role="radio" aria-checked="false">
+                  <span class="mfb-name">Aug</span><span class="mfb-season">☀️</span>
+                </button>
+                <button class="month-flex-btn" data-flex="month" data-value="2026-09" role="radio" aria-checked="false">
+                  <span class="mfb-name">Sep</span><span class="mfb-season">🍂</span>
+                </button>
+                <button class="month-flex-btn" data-flex="month" data-value="2026-10" role="radio" aria-checked="false">
+                  <span class="mfb-name">Oct</span><span class="mfb-season">🍂</span>
+                </button>
+                <button class="month-flex-btn" data-flex="month" data-value="2026-11" role="radio" aria-checked="false">
+                  <span class="mfb-name">Nov</span><span class="mfb-season">🌧️</span>
+                </button>
+                <button class="month-flex-btn" data-flex="month" data-value="2026-12" role="radio" aria-checked="false">
+                  <span class="mfb-name">Dec</span><span class="mfb-season">❄️</span>
+                </button>
+                <!-- 2027 -->
+                <div class="month-flex-year">2027</div>
+                <button class="month-flex-btn" data-flex="month" data-value="2027-01" role="radio" aria-checked="false">
+                  <span class="mfb-name">Ian</span><span class="mfb-season">❄️</span>
+                </button>
+                <button class="month-flex-btn" data-flex="month" data-value="2027-02" role="radio" aria-checked="false">
+                  <span class="mfb-name">Feb</span><span class="mfb-season">❄️</span>
+                </button>
+                <button class="month-flex-btn" data-flex="month" data-value="2027-03" role="radio" aria-checked="false">
+                  <span class="mfb-name">Mar</span><span class="mfb-season">🌸</span>
+                </button>
+                <button class="month-flex-btn" data-flex="month" data-value="2027-04" role="radio" aria-checked="false">
+                  <span class="mfb-name">Apr</span><span class="mfb-season">🌸</span>
+                </button>
+                <button class="month-flex-btn" data-flex="month" data-value="2027-05" role="radio" aria-checked="false">
+                  <span class="mfb-name">Mai</span><span class="mfb-season">🌸</span>
+                </button>
+                <button class="month-flex-btn" data-flex="month" data-value="2027-06" role="radio" aria-checked="false">
+                  <span class="mfb-name">Iun</span><span class="mfb-season">☀️</span>
+                </button>
+                <button class="month-flex-btn" data-flex="month" data-value="2027-07" role="radio" aria-checked="false">
+                  <span class="mfb-name">Iul</span><span class="mfb-season">☀️</span>
+                </button>
+                <button class="month-flex-btn" data-flex="month" data-value="2027-08" role="radio" aria-checked="false">
+                  <span class="mfb-name">Aug</span><span class="mfb-season">☀️</span>
+                </button>
+              </div>
+
+              <!-- Selecție activă rezumat -->
+              <div class="flex-selection-summary hidden" id="flex-selection-summary">
+                <span class="flex-summary-icon">🗓️</span>
+                <span id="flex-summary-text">Nicio selecție</span>
+                <button class="date-clear-btn" id="flex-clear-btn">✕ Resetează</button>
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+        <div class="filter-group">
+          <label class="filter-label" id="budget-label">Buget maxim / persoană</label>
+          <div class="budget-slider-wrap">
+            <input type="range" id="budget-slider" class="budget-slider" min="100" max="5000" step="50" value="5000" aria-labelledby="budget-label" aria-valuemin="100" aria-valuemax="5000" />
+            <div class="budget-display">
+              <span>100 €</span>
+              <strong id="budget-value">Fără limită</strong>
+              <span>5000 €</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== RESULTS SECTION ========== -->
+  <section id="results-section" class="results-section hidden" aria-labelledby="results-title" aria-live="polite">
+    <div class="container">
+      <div class="results-header">
+        <div>
+          <h2 id="results-title" class="section-title section-title--sm">Rezultate găsite</h2>
+          <p class="results-meta" id="results-meta">Se încarcă...</p>
+        </div>
+        <div class="results-controls">
+          <label for="sort-select" class="visually-hidden">Sortează după</label>
+          <select id="sort-select" class="sort-select" aria-label="Sortează rezultatele">
+            <option value="relevance">Relevanță</option>
+            <option value="price-asc">Preț: mic → mare</option>
+            <option value="price-desc">Preț: mare → mic</option>
+            <option value="rating">Rating</option>
+          </select>
+          <div class="view-toggle" role="group" aria-label="Mod afișare">
+            <button class="view-btn view-btn--active" id="grid-view-btn" aria-label="Vizualizare grilă" aria-pressed="true">⊞</button>
+            <button class="view-btn" id="list-view-btn" aria-label="Vizualizare listă" aria-pressed="false">≡</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Results Grid -->
+      <div class="results-grid" id="results-grid" role="list" aria-label="Lista oferte travel">
+        <!-- Cards injected by JS -->
+      </div>
+
+      <!-- Load More -->
+      <div class="load-more-wrap" id="load-more-wrap">
+        <button class="btn btn--outline" id="load-more-btn">
+          Încarcă mai multe oferte
+          <span class="btn__arrow">↓</span>
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== EMPTY STATE ========== -->
+  <div id="empty-state" class="empty-state hidden" role="status" aria-live="polite">
+    <div class="empty-state__inner">
+      <div class="empty-state__icon" aria-hidden="true">🔭</div>
+      <h3>Nicio ofertă găsită</h3>
+      <p>Încearcă să modifici filtrele sau termenul de căutare.<br />Sistemul AI va re-analiza bazele de date.</p>
+      <button class="btn btn--outline" id="reset-search">Resetează căutarea</button>
+    </div>
+  </div>
+
+  <!-- ========== ERROR STATE ========== -->
+  <div id="error-state" class="error-state hidden" role="alert" aria-live="assertive">
+    <div class="error-state__inner">
+      <div class="error-state__icon" aria-hidden="true">⚠️</div>
+      <h3 id="error-title">Eroare la conectare</h3>
+      <p id="error-message">Nu s-a putut conecta la API. Verifică conexiunea la internet.</p>
+      <button class="btn btn--outline" id="retry-btn">Reîncearcă</button>
+    </div>
+  </div>
+
+  <!-- ========== SKELETON LOADER ========== -->
+  <div id="skeleton-loader" class="skeleton-loader hidden" aria-hidden="true">
+    <div class="container">
+      <div class="results-grid">
+        <div class="skeleton-card"><div class="sk sk--img"></div><div class="sk sk--line sk--short"></div><div class="sk sk--line"></div><div class="sk sk--line sk--med"></div></div>
+        <div class="skeleton-card"><div class="sk sk--img"></div><div class="sk sk--line sk--short"></div><div class="sk sk--line"></div><div class="sk sk--line sk--med"></div></div>
+        <div class="skeleton-card"><div class="sk sk--img"></div><div class="sk sk--line sk--short"></div><div class="sk sk--line"></div><div class="sk sk--line sk--med"></div></div>
+        <div class="skeleton-card"><div class="sk sk--img"></div><div class="sk sk--line sk--short"></div><div class="sk sk--line"></div><div class="sk sk--line sk--med"></div></div>
+        <div class="skeleton-card"><div class="sk sk--img"></div><div class="sk sk--line sk--short"></div><div class="sk sk--line"></div><div class="sk sk--line sk--med"></div></div>
+        <div class="skeleton-card"><div class="sk sk--img"></div><div class="sk sk--line sk--short"></div><div class="sk sk--line"></div><div class="sk sk--line sk--med"></div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========== FLIGHTS SECTION ========== -->
+  <section id="flights-section" class="flights-section" aria-labelledby="flights-title">
+    <div class="container">
+      <div class="section-label" aria-hidden="true">// Bilete de avion</div>
+      <h2 id="flights-title" class="section-title">Caută zboruri.</h2>
+      <p class="section-subtitle">Găsește cele mai ieftine bilete de avion dus-întors sau dus. Compari prețuri din toate sursele simultan.</p>
+
+      <div class="flights-card">
+
+        <!-- Tabs: Dus-întors / Dus / Multi-city -->
+        <div class="flights-trip-tabs" role="tablist" aria-label="Tipul călătoriei">
+          <button class="trip-tab trip-tab--active" data-trip="roundtrip" role="tab" aria-selected="true">⇄ Dus-Întors</button>
+          <button class="trip-tab" data-trip="oneway" role="tab" aria-selected="false">→ Dus</button>
+          <button class="trip-tab" data-trip="multicity" role="tab" aria-selected="false">⊕ Multi-destinație</button>
+        </div>
+
+        <!-- Ruta principală -->
+        <div class="flights-route" id="flights-route">
+          <div class="route-field">
+            <label for="flight-from" class="route-label">De unde</label>
+            <div class="route-input-wrap">
+              <span class="route-icon" aria-hidden="true">🛫</span>
+              <input
+                type="text"
+                id="flight-from"
+                class="route-input"
+                placeholder="București (OTP)"
+                autocomplete="off"
+                aria-label="Aeroportul de plecare"
+                list="airports-from"
+                value="București (OTP)"
+              />
+              <datalist id="airports-from">
+                <option value="București (OTP)">
+                <option value="Cluj-Napoca (CLJ)">
+                <option value="Timișoara (TSR)">
+                <option value="Iași (IAS)">
+                <option value="Sibiu (SBZ)">
+                <option value="Constanța (CND)">
+              </datalist>
+            </div>
+          </div>
+
+          <button class="route-swap-btn" id="route-swap" aria-label="Inversează ruta" title="Inversează ruta">
+            <span aria-hidden="true">⇄</span>
+          </button>
+
+          <div class="route-field">
+            <label for="flight-to" class="route-label">Unde</label>
+            <div class="route-input-wrap">
+              <span class="route-icon" aria-hidden="true">🛬</span>
+              <input
+                type="text"
+                id="flight-to"
+                class="route-input"
+                placeholder="Oriunde / Destinație"
+                autocomplete="off"
+                aria-label="Aeroportul de destinație"
+                list="airports-to"
+              />
+              <datalist id="airports-to">
+                <option value="Oriunde">
+                <option value="Londra (LHR)">
+                <option value="Paris (CDG)">
+                <option value="Roma (FCO)">
+                <option value="Barcelona (BCN)">
+                <option value="Amsterdam (AMS)">
+                <option value="Madrid (MAD)">
+                <option value="Berlin (BER)">
+                <option value="Viena (VIE)">
+                <option value="Praga (PRG)">
+                <option value="Istanbul (IST)">
+                <option value="Dubai (DXB)">
+                <option value="Atena (ATH)">
+                <option value="Lisabona (LIS)">
+                <option value="Varșovia (WAW)">
+                <option value="Milano (MXP)">
+                <option value="Munchen (MUC)">
+                <option value="Antalya (AYT)">
+                <option value="Santorini (JTR)">
+                <option value="Mykonos (JMK)">
+                <option value="Heraklion Creta (HER)">
+                <option value="Corfu (CFU)">
+                <option value="Zakynthos (ZTH)">
+                <option value="Tel Aviv (TLV)">
+                <option value="New York (JFK)">
+                <option value="Marrakech (RAK)">
+              </datalist>
+            </div>
+          </div>
+        </div>
+
+        <!-- Date zboruri + Pasageri -->
+        <div class="flights-details">
+          <div class="flights-dates" id="flights-dates">
+            <div class="flight-date-group">
+              <label for="flight-depart" class="route-label">Plecare</label>
+              <div class="route-input-wrap">
+                <span class="route-icon" aria-hidden="true">📅</span>
+                <input type="date" id="flight-depart" class="route-input" aria-label="Data plecării" />
+              </div>
+            </div>
+            <div class="flight-date-group" id="flight-return-group">
+              <label for="flight-return" class="route-label">Întoarcere</label>
+              <div class="route-input-wrap">
+                <span class="route-icon" aria-hidden="true">📅</span>
+                <input type="date" id="flight-return" class="route-input" aria-label="Data întoarcerii" />
+              </div>
+            </div>
+          </div>
+
+          <div class="flights-pax">
+            <div class="pax-group">
+              <label class="route-label">Adulți</label>
+              <div class="pax-counter">
+                <button class="pax-btn" id="pax-adult-minus" aria-label="Scade adulți">−</button>
+                <span class="pax-value" id="pax-adult-val">1</span>
+                <button class="pax-btn" id="pax-adult-plus" aria-label="Adaugă adulți">+</button>
+              </div>
+            </div>
+            <div class="pax-group">
+              <label class="route-label">Copii</label>
+              <div class="pax-counter">
+                <button class="pax-btn" id="pax-child-minus" aria-label="Scade copii">−</button>
+                <span class="pax-value" id="pax-child-val">0</span>
+                <button class="pax-btn" id="pax-child-plus" aria-label="Adaugă copii">+</button>
+              </div>
+            </div>
+            <div class="pax-group">
+              <label class="route-label">Clasă</label>
+              <select id="flight-class" class="sort-select" aria-label="Clasa zborului">
+                <option value="economy">Economy</option>
+                <option value="premium">Premium Economy</option>
+                <option value="business">Business</option>
+                <option value="first">First Class</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <!-- Filtre rapide zbor -->
+        <div class="flights-quick-filters">
+          <label class="filter-label">Preferințe zbor</label>
+          <div class="filter-chips">
+            <button class="filter-chip" data-flight-filter="direct" aria-pressed="false">✈️ Direct (fără escală)</button>
+            <button class="filter-chip" data-flight-filter="baggage" aria-pressed="false">🧳 Bagaj inclus</button>
+            <button class="filter-chip" data-flight-filter="flexible" aria-pressed="false">🔄 Bilet flexibil</button>
+            <button class="filter-chip" data-flight-filter="morning" aria-pressed="false">🌅 Zbor dimineața</button>
+            <button class="filter-chip" data-flight-filter="evening" aria-pressed="false">🌙 Zbor seara</button>
+          </div>
+        </div>
+
+        <!-- Buton căutare zboruri -->
+        <div class="flights-search-row">
+          <div class="flights-price-alert">
+            <label class="price-alert-toggle">
+              <input type="checkbox" id="price-alert-toggle" />
+              <span class="toggle-slider"></span>
+              <span class="toggle-label">🔔 Alertă preț (notify când scade)</span>
+            </label>
+          </div>
+          <button class="btn btn--hero flights-search-btn" id="flights-search-btn">
+            <span class="btn__text">Caută Zboruri</span>
+            <span class="btn__spinner hidden" aria-hidden="true"></span>
+            <span class="btn__arrow">✈</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Flights Results -->
+      <div id="flights-results" class="flights-results hidden" aria-live="polite">
+        <div class="flights-results-header">
+          <h3 class="flights-results-title" id="flights-results-title">Zboruri găsite</h3>
+          <p class="results-meta" id="flights-results-meta"></p>
+        </div>
+        <div id="flights-results-list" class="flights-results-list" role="list">
+          <!-- Injectat de JS -->
+        </div>
+      </div>
+
+      <!-- Flights skeleton -->
+      <div id="flights-skeleton" class="flights-skeleton hidden" aria-hidden="true">
+        <div class="flight-sk-card"><div class="sk sk--line sk--short"></div><div class="sk sk--line"></div><div class="sk sk--line sk--med"></div></div>
+        <div class="flight-sk-card"><div class="sk sk--line sk--short"></div><div class="sk sk--line"></div><div class="sk sk--line sk--med"></div></div>
+        <div class="flight-sk-card"><div class="sk sk--line sk--short"></div><div class="sk sk--line"></div><div class="sk sk--line sk--med"></div></div>
+      </div>
+
+      <!-- Flights empty -->
+      <div id="flights-empty" class="empty-state hidden" role="status">
+        <div class="empty-state__inner">
+          <div class="empty-state__icon">✈️</div>
+          <h3>Niciun zbor găsit</h3>
+          <p>Încearcă să schimbi datele sau destinația. Dacă API-ul nu e configurat, activează datele demo.</p>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ========== TRENDING DESTINATIONS ========== -->
+  <section id="destinations-section" class="destinations-section" aria-labelledby="destinations-title">
+    <div class="container">
+      <div class="section-label" aria-hidden="true">// Trending acum</div>
+      <h2 id="destinations-title" class="section-title">Destinații populare</h2>
+      <p class="section-subtitle">Cele mai căutate destinații din această săptămână de către utilizatorii SmartTravel AI.</p>
+
+      <div class="destinations-grid" role="list" aria-label="Destinații populare">
+        <article class="destination-card" role="listitem" data-dest="Paris, Franța">
+          <div class="destination-card__img-wrap">
+            <img src="https://images.unsplash.com/photo-1499856871958-5b9627545d1a?w=600&q=80" alt="Turnul Eiffel, Paris" class="destination-card__img" loading="lazy" />
+            <div class="destination-card__overlay"></div>
+          </div>
+          <div class="destination-card__content">
+            <span class="destination-card__badge">🔥 Trending</span>
+            <h3 class="destination-card__title">Paris</h3>
+            <p class="destination-card__country">🇫🇷 Franța</p>
+            <p class="destination-card__price">de la <strong>189 €</strong> / persoană</p>
+          </div>
+          <button class="destination-card__cta" aria-label="Caută oferte Paris">Caută oferte</button>
+        </article>
+
+        <article class="destination-card destination-card--large" role="listitem" data-dest="Santorini, Grecia">
+          <div class="destination-card__img-wrap">
+            <img src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&q=80" alt="Santorini, Grecia" class="destination-card__img" loading="lazy" />
+            <div class="destination-card__overlay"></div>
+          </div>
+          <div class="destination-card__content">
+            <span class="destination-card__badge destination-card__badge--hot">🌅 Vara 2026</span>
+            <h3 class="destination-card__title">Santorini</h3>
+            <p class="destination-card__country">🇬🇷 Grecia</p>
+            <p class="destination-card__price">de la <strong>299 €</strong> / persoană</p>
+          </div>
+          <button class="destination-card__cta" aria-label="Caută oferte Santorini">Caută oferte</button>
+        </article>
+
+        <article class="destination-card" role="listitem" data-dest="Roma, Italia">
+          <div class="destination-card__img-wrap">
+            <img src="https://images.unsplash.com/photo-1529260830199-42c24126f198?w=600&q=80" alt="Colosseum, Roma" class="destination-card__img" loading="lazy" />
+            <div class="destination-card__overlay"></div>
+          </div>
+          <div class="destination-card__content">
+            <span class="destination-card__badge">🏛️ City Break</span>
+            <h3 class="destination-card__title">Roma</h3>
+            <p class="destination-card__country">🇮🇹 Italia</p>
+            <p class="destination-card__price">de la <strong>149 €</strong> / persoană</p>
+          </div>
+          <button class="destination-card__cta" aria-label="Caută oferte Roma">Caută oferte</button>
+        </article>
+
+        <article class="destination-card" role="listitem" data-dest="Barcelona, Spania">
+          <div class="destination-card__img-wrap">
+            <img src="https://images.unsplash.com/photo-1583422409516-2895a77efded?w=600&q=80" alt="Sagrada Familia, Barcelona" class="destination-card__img" loading="lazy" />
+            <div class="destination-card__overlay"></div>
+          </div>
+          <div class="destination-card__content">
+            <span class="destination-card__badge">✨ Popular</span>
+            <h3 class="destination-card__title">Barcelona</h3>
+            <p class="destination-card__country">🇪🇸 Spania</p>
+            <p class="destination-card__price">de la <strong>199 €</strong> / persoană</p>
+          </div>
+          <button class="destination-card__cta" aria-label="Caută oferte Barcelona">Caută oferte</button>
+        </article>
+
+        <article class="destination-card" role="listitem" data-dest="Amsterdam, Olanda">
+          <div class="destination-card__img-wrap">
+            <img src="https://images.unsplash.com/photo-1535468850893-d6e543fbd7f5?w=600&q=80" alt="Canalele din Amsterdam" class="destination-card__img" loading="lazy" />
+            <div class="destination-card__overlay"></div>
+          </div>
+          <div class="destination-card__content">
+            <span class="destination-card__badge">🌷 Primăvară</span>
+            <h3 class="destination-card__title">Amsterdam</h3>
+            <p class="destination-card__country">🇳🇱 Olanda</p>
+            <p class="destination-card__price">de la <strong>219 €</strong> / persoană</p>
+          </div>
+          <button class="destination-card__cta" aria-label="Caută oferte Amsterdam">Caută oferte</button>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== HOW IT WORKS ========== -->
+  <section id="about-section" class="how-section" aria-labelledby="how-title">
+    <div class="container">
+      <div class="section-label" aria-hidden="true">// Cum funcționează</div>
+      <h2 id="how-title" class="section-title">3 pași simpli.</h2>
+
+      <div class="how-steps">
+        <div class="how-step">
+          <div class="how-step__number" aria-hidden="true">01</div>
+          <div class="how-step__icon" aria-hidden="true">✍️</div>
+          <h3 class="how-step__title">Descrie vacanța</h3>
+          <p class="how-step__text">Scrie în limbaj natural ce tip de vacanță vrei, numărul de persoane și bugetul. Nu ai nevoie de date exacte.</p>
+        </div>
+        <div class="how-step__connector" aria-hidden="true"></div>
+        <div class="how-step">
+          <div class="how-step__number" aria-hidden="true">02</div>
+          <div class="how-step__icon" aria-hidden="true">🤖</div>
+          <h3 class="how-step__title">AI analizează</h3>
+          <p class="how-step__text">Sistemul nostru interpretează cererea și interoghează în timp real sute de surse: Booking.com, Skyscanner, agenții locale.</p>
+        </div>
+        <div class="how-step__connector" aria-hidden="true"></div>
+        <div class="how-step">
+          <div class="how-step__number" aria-hidden="true">03</div>
+          <div class="how-step__icon" aria-hidden="true">🎯</div>
+          <h3 class="how-step__title">Rezervi direct</h3>
+          <p class="how-step__text">Primești carduri cu ofertele găsite. Fiecare are un buton "Vezi Oferta" care te duce direct la pagina de rezervare.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== API CONFIG NOTICE ========== -->
+  <div class="api-notice" id="api-notice" role="status">
+    <div class="container">
+      <div class="api-notice__inner">
+        <span class="api-notice__icon">⚙️</span>
+        <div class="api-notice__text">
+          <strong>Mod Demo activ</strong> — Datele afișate sunt exemple. Configurează cheile API în <code>app.js</code> pentru date live.
+        </div>
+        <button class="api-notice__close" id="api-notice-close" aria-label="Închide notificarea">✕</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========== FOOTER ========== -->
+  <footer class="site-footer" role="contentinfo">
+    <div class="container site-footer__inner">
+      <div class="site-footer__brand">
+        <a href="#" class="logo logo--sm" aria-label="SmartTravel AI">
+          <span class="logo__mark">✦</span>
+          <span class="logo__name">SmartTravel<em>AI</em></span>
+        </a>
+        <p class="site-footer__tagline">Vacanța ta perfectă, în câteva secunde.</p>
+      </div>
+      <div class="site-footer__links">
+        <h4>Aplicație</h4>
+        <a href="#search-section">Căutare</a>
+        <a href="#destinations-section">Destinații</a>
+        <a href="#about-section">Cum funcționează</a>
+      </div>
+      <div class="site-footer__links">
+        <h4>Legal</h4>
+        <a href="#">Termeni & Condiții</a>
+        <a href="#">Politica de confidențialitate</a>
+        <a href="#">Cookie-uri</a>
+      </div>
+    </div>
+    <div class="site-footer__bottom">
+      <div class="container">
+        <p>© 2026 SmartTravel AI · Construit cu ❤️ pentru călători · GitHub Pages</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ========== OFFER DETAIL MODAL ========== -->
+  <div class="modal-overlay hidden" id="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+    <div class="modal" id="modal">
+      <button class="modal__close" id="modal-close" aria-label="Închide fereastra">✕</button>
+      <div class="modal__content" id="modal-content">
+        <!-- Injected by JS -->
+      </div>
+    </div>
+  </div>
+
+  <!-- ========== TOAST NOTIFICATION ========== -->
+  <div class="toast" id="toast" role="status" aria-live="polite" aria-atomic="true"></div>
+
+  <!-- ===== FLEX DATE PICKER LOGIC ===== -->
+  <script>
+  (function() {
+    /* ── State ── */
+    const flexState = {
+      nights: 0,       // 0 = orice
+      month: null,     // "2026-07" etc.
+    };
+
+    const MONTH_NAMES = {
+      '01':'Ianuarie','02':'Februarie','03':'Martie','04':'Aprilie',
+      '05':'Mai','06':'Iunie','07':'Iulie','08':'August',
+      '09':'Septembrie','10':'Octombrie','11':'Noiembrie','12':'Decembrie'
+    };
+
+    /* ── Duration chips ── */
+    document.querySelectorAll('[data-flex="nights"]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('[data-flex="nights"]').forEach(b => {
+          b.classList.remove('filter-chip--active');
+          b.setAttribute('aria-checked', 'false');
+        });
+        btn.classList.add('filter-chip--active');
+        btn.setAttribute('aria-checked', 'true');
+        flexState.nights = parseInt(btn.dataset.value, 10);
+        updateSummary();
+        applyFlexToAppState();
+      });
+    });
+
+    /* ── Month buttons ── */
+    document.querySelectorAll('[data-flex="month"]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const wasActive = btn.classList.contains('active');
+        // deselect all
+        document.querySelectorAll('[data-flex="month"]').forEach(b => {
+          b.classList.remove('active');
+          b.setAttribute('aria-checked', 'false');
+        });
+        if (!wasActive) {
+          btn.classList.add('active');
+          btn.setAttribute('aria-checked', 'true');
+          flexState.month = btn.dataset.value;
+        } else {
+          flexState.month = null;
+        }
+        updateSummary();
+        applyFlexToAppState();
+      });
+    });
+
+    /* ── Reset button ── */
+    document.getElementById('flex-clear-btn')?.addEventListener('click', () => {
+      flexState.nights = 0;
+      flexState.month = null;
+      document.querySelectorAll('[data-flex="nights"]').forEach(b => {
+        b.classList.remove('filter-chip--active');
+        b.setAttribute('aria-checked', 'false');
+      });
+      const anyNights = document.querySelector('[data-flex="nights"][data-value="0"]');
+      if (anyNights) { anyNights.classList.add('filter-chip--active'); anyNights.setAttribute('aria-checked','true'); }
+      document.querySelectorAll('[data-flex="month"]').forEach(b => {
+        b.classList.remove('active');
+        b.setAttribute('aria-checked', 'false');
+      });
+      updateSummary();
+      applyFlexToAppState();
+    });
+
+    /* ── Build summary text ── */
+    function updateSummary() {
+      const summary = document.getElementById('flex-selection-summary');
+      const text = document.getElementById('flex-summary-text');
+      if (!summary || !text) return;
+
+      const parts = [];
+      if (flexState.nights > 0) {
+        parts.push(flexState.nights >= 10
+          ? `${flexState.nights}+ nopți`
+          : `${flexState.nights} nopți`);
+      }
+      if (flexState.month) {
+        const [yr, mo] = flexState.month.split('-');
+        parts.push(`${MONTH_NAMES[mo]} ${yr}`);
+      }
+
+      if (parts.length > 0) {
+        text.textContent = parts.join(' · ');
+        summary.classList.remove('hidden');
+      } else {
+        summary.classList.add('hidden');
+      }
+    }
+
+    /* ── Push into AppState filters (dacă există) ── */
+    function applyFlexToAppState() {
+      if (typeof AppState === 'undefined') return;
+
+      // Nopți
+      AppState.filters.nights = flexState.nights;
+
+      // Lună → calculăm checkIn/checkOut window
+      if (flexState.month) {
+        const [yr, mo] = flexState.month.split('-');
+        const firstDay = new Date(parseInt(yr), parseInt(mo) - 1, 1);
+        const lastDay  = new Date(parseInt(yr), parseInt(mo), 0);
+        AppState.filters.monthFrom = firstDay.toISOString().split('T')[0];
+        AppState.filters.monthTo   = lastDay.toISOString().split('T')[0];
+      } else {
+        AppState.filters.monthFrom = null;
+        AppState.filters.monthTo   = null;
+      }
+    }
+  })();
+  </script>
+
+  <script src="app.js"></script>
+</body>
+</html>
