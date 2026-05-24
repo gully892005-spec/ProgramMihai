@@ -16,7 +16,7 @@ const API_CONFIG = {
    * https://rapidapi.com/DataCrawler/api/booking-com15
    */
   BOOKING: {
-    ENABLED: false,
+    ENABLED: true,
     KEY: RAPIDAPI_KEY,
     HOST: "booking-com15.p.rapidapi.com",
     BASE_URL: "https://booking-com15.p.rapidapi.com/api/v1/hotels/searchHotels",
@@ -27,7 +27,7 @@ const API_CONFIG = {
    * https://booking-com15.p.rapidapi.com/api/v1/cars/searchCarRentals
    */
   CAR_RENTALS: {
-    ENABLED: false,
+    ENABLED: true,
     KEY: RAPIDAPI_KEY,
     HOST: "booking-com15.p.rapidapi.com",
     BASE_URL: "https://booking-com15.p.rapidapi.com/api/v1/cars/searchCarRentals",
@@ -38,7 +38,7 @@ const API_CONFIG = {
    * https://rapidapi.com/skyscanner-flights4/api/skyscanner-flights4
    */
   SKYSCANNER: {
-    ENABLED: false,
+    ENABLED: true,
     KEY: RAPIDAPI_KEY,
     HOST: "skyscanner-flights4.p.rapidapi.com",
     BASE_URL: "https://skyscanner-flights4.p.rapidapi.com/api/v1",
@@ -50,7 +50,7 @@ const API_CONFIG = {
    * https://rapidapi.com/google-flights2/api/google-flights2
    */
   GOOGLE_FLIGHTS: {
-    ENABLED: false,
+    ENABLED: true,
     KEY: RAPIDAPI_KEY,
     HOST: "google-flights2.p.rapidapi.com",
     BASE_URL: "https://google-flights2.p.rapidapi.com/api/v1/searchFlights",
@@ -61,7 +61,7 @@ const API_CONFIG = {
    * https://rapidapi.com/airbnb19/api/airbnb19
    */
   AIRBNB: {
-    ENABLED: false,
+    ENABLED: true,
     KEY: RAPIDAPI_KEY,
     HOST: "airbnb19.p.rapidapi.com",
     BASE_URL: "https://airbnb19.p.rapidapi.com/api/v2/searchPropertyByPlaceId",
@@ -72,7 +72,7 @@ const API_CONFIG = {
    * https://rapidapi.com/tripadvisor16/api/tripadvisor16
    */
   TRIPADVISOR: {
-    ENABLED: false,
+    ENABLED: true,
     KEY: RAPIDAPI_KEY,
     HOST: "tripadvisor16.p.rapidapi.com",
     BASE_URL: "https://tripadvisor16.p.rapidapi.com/api/v1/restaurant/searchRestaurants",
@@ -83,7 +83,7 @@ const API_CONFIG = {
    * https://rapidapi.com/hotels4/api/hotels4
    */
   HOTELS: {
-    ENABLED: false,
+    ENABLED: true,
     KEY: RAPIDAPI_KEY,
     HOST: "hotels4.p.rapidapi.com",
     BASE_URL: "https://hotels4.p.rapidapi.com/properties/get-details",
@@ -94,7 +94,7 @@ const API_CONFIG = {
    * https://rapidapi.com/ryanair2/api/ryanair2
    */
   RYANAIR: {
-    ENABLED: false,
+    ENABLED: true,
     KEY: RAPIDAPI_KEY,
     HOST: "ryanair2.p.rapidapi.com",
     BASE_URL: "https://ryanair2.p.rapidapi.com/api/v1/availabilityCalendar",
@@ -105,7 +105,7 @@ const API_CONFIG = {
    * https://rapidapi.com/aerodatabox/api/aerodatabox
    */
   FLIGHTS: {
-    ENABLED: false,
+    ENABLED: true,
     KEY: RAPIDAPI_KEY,
     HOST: "aerodatabox.p.rapidapi.com",
     BASE_URL: "https://aerodatabox.p.rapidapi.com/flights",
